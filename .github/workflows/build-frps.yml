@@ -1,0 +1,57 @@
+name: Build and Push frps to Aliyun ACR
+
+on:
+  push:
+    branches: [ "dev" ] # 请根据您的实际默认分支修改
+  pull_request:
+    branches: [ "dev" ]
+  workflow_dispatch: # 允许手动触发
+
+env:
+  REGISTRY: registry.cn-hangzhou.aliyuncs.com
+  # ⚠️ 请替换为您在阿里云ACR中创建的命名空间和仓库名称
+  NAMESPACE: xczns 
+  REPOSITORY: frps
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Aliyun ACR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.ALIYUN_ACR_USERNAME }}
+          password: ${{ secrets.ALIYUN_ACR_PASSWORD }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.NAMESPACE }}/${{ env.REPOSITORY }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,prefix=,format=short
+            type=ref,event=branch
+            type=ref,event=tag
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: ${{ github.event_name != 'pull_request' }} # PR时不推送，只测试构建
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64,linux/arm64 # 支持多架构构建
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
