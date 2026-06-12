@@ -44,13 +44,6 @@ jobs:
           username: ${{ secrets.ALIYUN_ACR_USERNAME }}
           password: ${{ secrets.ALIYUN_ACR_PASSWORD }}
 
-      - name: 登录GPR
-        uses: docker/login-action@v4
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GPR_TOKEN }}
-
       # 准备镜像标签
       - name: 准备镜像标签
         run: |
@@ -58,8 +51,6 @@ jobs:
           echo "DOCKERFILE_FRPS_PATH=dockerfiles/Dockerfile-for-frps" >> $GITHUB_ENV
           echo "TAG_FRPC=registry.cn-hangzhou.aliyuncs.com/xczns/frpc:${{ env.TAG_NAME }}" >> $GITHUB_ENV
           echo "TAG_FRPS=registry.cn-hangzhou.aliyuncs.com/xczns/frps:${{ env.TAG_NAME }}" >> $GITHUB_ENV
-          echo "TAG_FRPC_GPR=ghcr.io/fatedier/frpc:${{ env.TAG_NAME }}" >> $GITHUB_ENV
-          echo "TAG_FRPS_GPR=ghcr.io/fatedier/frps:${{ env.TAG_NAME }}" >> $GITHUB_ENV
 
       - name: 构建并推送frpc
         uses: docker/build-push-action@v7
@@ -68,9 +59,7 @@ jobs:
           file: ./dockerfiles/Dockerfile-for-frpc
           platforms: linux/amd64,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x
           push: true
-          tags: |
-            ${{ env.TAG_FRPC }}
-            ${{ env.TAG_FRPC_GPR }}
+          tags: ${{ env.TAG_FRPC }}
 
       - name: 构建并推送frps
         uses: docker/build-push-action@v7
@@ -79,6 +68,4 @@ jobs:
           file: ./dockerfiles/Dockerfile-for-frps
           platforms: linux/amd64,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x
           push: true
-          tags: |
-            ${{ env.TAG_FRPS }}
-            ${{ env.TAG_FRPS_GPR }}
+          tags: ${{ env.TAG_FRPS }}
