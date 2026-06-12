@@ -3,8 +3,8 @@
     <div class="page-header">
       <div class="header-top">
         <div class="title-section">
-          <h1 class="page-title">Clients</h1>
-          <p class="page-subtitle">Manage connected clients and their status</p>
+          <h1 class="page-title">客户端</h1>
+          <p class="page-subtitle">管理已连接的客户端及其状态</p>
         </div>
         <div class="status-tabs">
           <button
@@ -26,7 +26,7 @@
       <div class="search-section">
         <el-input
           v-model="searchText"
-          placeholder="Search clients..."
+          placeholder="搜索客户端..."
           :prefix-icon="Search"
           clearable
           class="search-input"
@@ -43,7 +43,7 @@
         />
       </div>
       <div v-else-if="!loading" class="empty-state">
-        <el-empty description="No clients found" />
+        <el-empty description="未找到客户端" />
       </div>
     </div>
 
@@ -84,17 +84,17 @@ let requestSeq = 0
 const statusTabs = computed(() => [
   {
     value: 'all' as const,
-    label: 'All',
+    label: '全部',
     count: statusFilter.value === 'all' ? total.value : null,
   },
   {
     value: 'online' as const,
-    label: 'Online',
+    label: '在线',
     count: statusFilter.value === 'online' ? total.value : null,
   },
   {
     value: 'offline' as const,
-    label: 'Offline',
+    label: '离线',
     count: statusFilter.value === 'offline' ? total.value : null,
   },
 ])
@@ -126,7 +126,7 @@ const fetchData = async (silent = false) => {
     if (seq !== requestSeq) return
     ElMessage({
       showClose: true,
-      message: 'Failed to fetch clients: ' + error.message,
+      message: '获取客户端信息失败：' + error.message,
       type: 'error',
     })
   } finally {

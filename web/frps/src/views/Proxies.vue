@@ -3,17 +3,17 @@
     <div class="page-header">
       <div class="header-top">
         <div class="title-section">
-          <h1 class="page-title">Proxies</h1>
-          <p class="page-subtitle">View and manage all proxy configurations</p>
+          <h1 class="page-title">代理</h1>
+          <p class="page-subtitle">查看和管理所有代理配置</p>
         </div>
 
         <div class="actions-section">
           <ActionButton variant="outline" size="small" @click="refreshData">
-            Refresh
+            刷新
           </ActionButton>
 
           <ActionButton variant="outline" size="small" danger @click="showClearDialog = true">
-            Clear Offline
+            清除离线
           </ActionButton>
         </div>
       </div>
@@ -22,7 +22,7 @@
         <div class="search-row">
           <el-input
             v-model="searchText"
-            placeholder="Search proxies..."
+            placeholder="搜索代理..."
             :prefix-icon="Search"
             clearable
             class="main-search"
@@ -34,19 +34,19 @@
             placement="bottom-end"
             selectable
             filterable
-            filter-placeholder="Search clients..."
+            filter-placeholder="搜索客户端..."
             :display-value="selectedClientLabel"
             clearable
             class="client-filter"
             @update:model-value="onClientFilterChange($event as string)"
           >
             <template #default="{ filterText }">
-              <PopoverMenuItem value="">All Clients</PopoverMenuItem>
+              <PopoverMenuItem value="">全部客户端</PopoverMenuItem>
               <PopoverMenuItem
                 v-if="clientIDFilter && !selectedClientInList"
                 :value="selectedClientKey"
               >
-                {{ userFilter ? userFilter + '.' : '' }}{{ clientIDFilter }} (not found)
+                {{ userFilter ? userFilter + '.' : '' }}{{ clientIDFilter }} (未找到)
               </PopoverMenuItem>
               <PopoverMenuItem
                 v-for="client in filteredClientOptions(filterText)"
@@ -83,7 +83,7 @@
         />
       </div>
       <div v-else-if="!loading" class="empty-state">
-        <el-empty description="No proxies found" />
+        <el-empty description="未找到代理" />
       </div>
     </div>
 
@@ -101,9 +101,9 @@
 
     <ConfirmDialog
       v-model="showClearDialog"
-      title="Clear Offline"
-      message="Are you sure you want to clear all offline proxies?"
-      confirm-text="Clear"
+      title="清除离线代理"
+      message="确定要清除所有离线代理吗？"
+      confirm-text="清除"
       danger
       @confirm="handleClearConfirm"
     />
@@ -143,7 +143,7 @@ const route = useRoute()
 const router = useRouter()
 
 const proxyTypes = [
-  { label: 'All', value: 'all' },
+  { label: '全部', value: 'all' },
   { label: 'TCP', value: 'tcp' },
   { label: 'UDP', value: 'udp' },
   { label: 'HTTP', value: 'http' },
@@ -191,7 +191,7 @@ const selectedClientKey = computed(() => {
 })
 
 const selectedClientLabel = computed(() => {
-  if (!clientIDFilter.value) return 'All Clients'
+  if (!clientIDFilter.value) return '全部客户端'
   const client = clientOptions.value.find(
     (c) => c.clientID === clientIDFilter.value && c.user === userFilter.value,
   )
@@ -248,7 +248,7 @@ const fetchClients = async () => {
   } catch (err) {
     // Client dropdown is a non-critical side load; log for diagnostics
     // but don't surface a toast (would compete with the main fetch error).
-    console.warn('Failed to fetch clients for filter:', err)
+    console.warn('获取客户端过滤列表失败:', err)
   }
 }
 
@@ -360,7 +360,7 @@ const fetchData = async (silent = false) => {
     if (seq !== requestSeq) return
     ElMessage({
       showClose: true,
-      message: 'Failed to fetch proxies: ' + error.message,
+      message: '获取代理信息失败：' + error.message,
       type: 'error',
     })
   } finally {
@@ -407,13 +407,13 @@ const clearOfflineProxies = async () => {
   try {
     await apiClearOfflineProxies()
     ElMessage({
-      message: 'Successfully cleared offline proxies',
+      message: '成功清除离线代理',
       type: 'success',
     })
     fetchData()
   } catch (err: any) {
     ElMessage({
-      message: 'Failed to clear offline proxies: ' + err.message,
+      message: '清除离线代理失败：' + err.message,
       type: 'warning',
     })
   }
