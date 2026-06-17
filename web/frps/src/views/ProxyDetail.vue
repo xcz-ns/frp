@@ -62,11 +62,11 @@
                 </router-link>
                 <span v-if="proxy.lastStartTime" class="meta-text">
                   <span class="meta-sep">·</span>
-                  上次启动于 {{ proxy.lastStartTime }}
+                  最后启动 {{ proxy.lastStartTime }}
                 </span>
                 <span v-if="proxy.lastCloseTime" class="meta-text">
                   <span class="meta-sep">·</span>
-                  上次关闭于 {{ proxy.lastCloseTime }}
+                  最后关闭 {{ proxy.lastCloseTime }}
                 </span>
               </div>
             </div>
@@ -93,7 +93,7 @@
         <div class="config-section">
           <div class="config-section-header">
             <el-icon><Setting /></el-icon>
-            <h2>配置</h2>
+            <h2>配置信息</h2>
           </div>
 
           <!-- Config Cards Grid -->
@@ -105,7 +105,7 @@
               <div class="config-item-content">
                 <span class="config-item-label">加密</span>
                 <span class="config-item-value">{{
-                  proxy.encryption ? '已启用' : '已禁用'
+                  proxy.encryption ? '已启用' : '未启用'
                 }}</span>
               </div>
             </div>
@@ -117,7 +117,7 @@
               <div class="config-item-content">
                 <span class="config-item-label">压缩</span>
                 <span class="config-item-value">{{
-                  proxy.compression ? '已启用' : '已禁用'
+                  proxy.compression ? '已启用' : '未启用'
                 }}</span>
               </div>
             </div>
@@ -147,7 +147,7 @@
                 <el-icon><Location /></el-icon>
               </div>
               <div class="config-item-content">
-                <span class="config-item-label">路由路径</span>
+                <span class="config-item-label">路径</span>
                 <span class="config-item-value">{{ proxy.locations }}</span>
               </div>
             </div>
@@ -179,7 +179,7 @@
                 <el-icon><Connection /></el-icon>
               </div>
               <div class="config-item-content">
-                <span class="config-item-label">按 HTTP 用户路由</span>
+                <span class="config-item-label">HTTP 用户路由</span>
                 <span class="config-item-value">{{
                   proxy.routeByHTTPUser
                 }}</span>
@@ -213,7 +213,7 @@
       </template>
 
       <div v-else-if="!loading" class="not-found">
-        <h2>未找到代理</h2>
+        <h2>代理未找到</h2>
         <p>该代理不存在或已被移除。</p>
         <router-link to="/proxies">
           <el-button type="primary">返回代理列表</el-button>

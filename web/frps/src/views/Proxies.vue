@@ -4,7 +4,7 @@
       <div class="header-top">
         <div class="title-section">
           <h1 class="page-title">代理</h1>
-          <p class="page-subtitle">查看和管理所有代理配置</p>
+          <p class="page-subtitle">查看并管理所有代理配置</p>
         </div>
 
         <div class="actions-section">
@@ -13,7 +13,7 @@
           </ActionButton>
 
           <ActionButton variant="outline" size="small" danger @click="showClearDialog = true">
-            清除离线
+            清除离线代理
           </ActionButton>
         </div>
       </div>
@@ -46,7 +46,7 @@
                 v-if="clientIDFilter && !selectedClientInList"
                 :value="selectedClientKey"
               >
-                {{ userFilter ? userFilter + '.' : '' }}{{ clientIDFilter }} (未找到)
+                {{ userFilter ? userFilter + '.' : '' }}{{ clientIDFilter }} (not found)
               </PopoverMenuItem>
               <PopoverMenuItem
                 v-for="client in filteredClientOptions(filterText)"
@@ -103,7 +103,7 @@
       v-model="showClearDialog"
       title="清除离线代理"
       message="确定要清除所有离线代理吗？"
-      confirm-text="清除"
+      confirm-text="确认清除"
       danger
       @confirm="handleClearConfirm"
     />
@@ -190,7 +190,7 @@ const selectedClientKey = computed(() => {
   return client?.key || `${userFilter.value}:${clientIDFilter.value}`
 })
 
-const selectedClientLabel = computed(() => {
+  const selectedClientLabel = computed(() => {
   if (!clientIDFilter.value) return '全部客户端'
   const client = clientOptions.value.find(
     (c) => c.clientID === clientIDFilter.value && c.user === userFilter.value,
@@ -248,7 +248,7 @@ const fetchClients = async () => {
   } catch (err) {
     // Client dropdown is a non-critical side load; log for diagnostics
     // but don't surface a toast (would compete with the main fetch error).
-    console.warn('获取客户端过滤列表失败:', err)
+    console.warn('Failed to fetch clients for filter:', err)
   }
 }
 
@@ -360,7 +360,7 @@ const fetchData = async (silent = false) => {
     if (seq !== requestSeq) return
     ElMessage({
       showClose: true,
-      message: '获取代理信息失败：' + error.message,
+      message: '获取代理列表失败：' + error.message,
       type: 'error',
     })
   } finally {
@@ -407,7 +407,7 @@ const clearOfflineProxies = async () => {
   try {
     await apiClearOfflineProxies()
     ElMessage({
-      message: '成功清除离线代理',
+      message: '已成功清除离线代理',
       type: 'success',
     })
     fetchData()

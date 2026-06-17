@@ -58,7 +58,7 @@
             :class="{ active: route.path === '/' }"
             @click="closeSidebar"
           >
-            Overview
+            概览
           </router-link>
           <router-link
             to="/clients"
@@ -66,7 +66,7 @@
             :class="{ active: route.path.startsWith('/clients') }"
             @click="closeSidebar"
           >
-            Clients
+            客户端
           </router-link>
           <router-link
             to="/proxies"
@@ -78,7 +78,7 @@
             }"
             @click="closeSidebar"
           >
-            Proxies
+            代理
           </router-link>
         </nav>
       </aside>

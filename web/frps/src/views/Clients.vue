@@ -126,7 +126,7 @@ const fetchData = async (silent = false) => {
     if (seq !== requestSeq) return
     ElMessage({
       showClose: true,
-      message: '获取客户端信息失败：' + error.message,
+      message: '获取客户端列表失败：' + error.message,
       type: 'error',
     })
   } finally {

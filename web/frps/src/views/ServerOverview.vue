@@ -136,11 +136,11 @@
           <span class="config-value">{{ data.subdomainHost }}</span>
         </div>
         <div class="config-item">
-          <span class="config-label">最大连接池数量</span>
+          <span class="config-label">最大连接池</span>
           <span class="config-value">{{ data.maxPoolCount }}</span>
         </div>
         <div class="config-item">
-          <span class="config-label">单客户端最大端口数</span>
+          <span class="config-label">每客户端最大端口</span>
           <span class="config-value">{{ data.maxPortsPerClient }}</span>
         </div>
         <div class="config-item" v-if="data.allowPortsStr != ''">
@@ -213,7 +213,7 @@ const fetchData = async () => {
     data.value.maxPoolCount = json.maxPoolCount
     data.value.maxPortsPerClient = String(json.maxPortsPerClient)
     if (data.value.maxPortsPerClient == '0') {
-      data.value.maxPortsPerClient = '无限制'
+      data.value.maxPortsPerClient = '不限制'
     }
     data.value.allowPortsStr = json.allowPortsStr
     data.value.tlsForce = json.tlsForce
@@ -233,7 +233,7 @@ const fetchData = async () => {
   } catch {
     ElMessage({
       showClose: true,
-      message: '从 frps 获取服务器信息失败！',
+      message: '获取 frps 服务器信息失败！',
       type: 'error',
     })
   }

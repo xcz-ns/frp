@@ -71,7 +71,7 @@
             </div>
             <div class="info-item">
               <span class="info-label">{{
-                client.online ? '连接于' : '断开于'
+                client.online ? '已连接' : '已断开'
               }}</span>
               <span class="info-value">{{
                 client.online ? client.lastConnectedAgo : client.disconnectedAgo
@@ -84,7 +84,7 @@
         <div class="proxies-card">
           <div class="proxies-header">
             <div class="proxies-title">
-              <h2>代理</h2>
+              <h2>代理列表</h2>
               <span class="proxies-count">{{ filteredProxies.length }}</span>
             </div>
             <el-input
@@ -112,14 +112,14 @@
               <p>没有匹配 "{{ proxySearch }}" 的代理</p>
             </div>
             <div v-else class="empty-state">
-              <p>未找到代理</p>
+              <p>暂无代理</p>
             </div>
           </div>
         </div>
       </template>
 
       <div v-else-if="!loading" class="not-found">
-        <h2>未找到客户端</h2>
+        <h2>客户端未找到</h2>
         <p>该客户端不存在或已被移除。</p>
         <router-link to="/clients">
           <el-button type="primary">返回客户端列表</el-button>
